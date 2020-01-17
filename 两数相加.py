@@ -65,30 +65,37 @@ class Solution(object):
         while True:
             if l1 is None and l2 is None:
                 break
-            l1_val = l1.val if l1 else 0
-            l2_val = l2.val if l2 else 0
-            if l1_val == 0 and l2_val == 0:
+            l1_val = l1.val if l1 else None
+            l2_val = l2.val if l2 else None
+            if l1_val is None and l2_val is None:
                 break
-        
+            
+            if l1_val is None:
+                l1_val = 0
+            if l2_val is None:
+                l2_val = 0
+            # 获取对应节点的值相加
+            sum = l1_val + l2_val
+            # 初始化节点
             if not cur:
-                cur = ListNode(l1_val + l2_val)
-            else:
-                cur.val += l1_val + l2_val
+                cur = ListNode(0)
             if not first:
                 first = cur
-            
-            if cur.val >= 10:
-                cur_forward = cur.val / 10  # 进位
-                cur_yushu = cur.val % 10  # 当前节点值
-                
-                cur.val = cur_yushu
+  
+            cur_forward = (cur.val + sum) / 10  # 进位
+            cur_yushu = (cur.val + sum) % 10  # 当前节点值
+            cur.val = cur_yushu
+            if all([l1.next, l2.next]) or cur_forward >= 1:
                 cur.next = ListNode(cur_forward)
-                
             
+            if l1.next is None:
+                l1.next = ListNode(0)
+            if l2.next is None:
+                l2.next = ListNode(0)    
             l1 = l1.next
             l2 = l2.next
             cur = cur.next
-        
+
         return first
             
                  
@@ -99,10 +106,19 @@ class Solution(object):
 if __name__ == '__main__':
     l1 = ListNode(2)
     l1.next = ListNode(4)
-    l1.next.next = ListNode(3)
+    # l1.next.next = ListNode(3)
+    # l1.next.next.next = ListNode(5)
     
     l2 = ListNode(5)
-    l2.next = ListNode(6)
-    l2.next.next = ListNode(4)
-   
+    # l2.next = ListNode(6)
+    # l2.next.next = ListNode(4)
+    
+    # l1 = ListNode(0)
+    # l2 = ListNode(0)
+    
+    # l1 = ListNode(5)
+    # l2 = ListNode(5)
+    
+    
+    
     print Solution().addTwoNumbers(l1, l2)
